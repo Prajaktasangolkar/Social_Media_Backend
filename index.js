@@ -6,6 +6,7 @@ const app=express()
 const PORT=5000
 const AuthRoute=require('./routes/UserAuth.js')
 const Authrouter=require('./routes/UseridRoute.js')
+const PostRoute=require("./routes/PostRoute.js")
 connectDB()
 
 
@@ -15,6 +16,7 @@ app.use(cors())
 
 app.use('/auth',AuthRoute)
 app.use('/user',Authrouter)
+app.use('/post',PostRoute)
 
 // app.use("/",()=>{
 //     console.log('helllo world');

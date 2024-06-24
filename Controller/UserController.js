@@ -82,8 +82,8 @@ const followUser=async(req,res)=>{
     }
     else{
         try{
-             const followUser=User.findById(id);
-             const followingUser=User.findById(currentUserId)
+             const followUser=await User.findById(id);
+             const followingUser=await User.findById(currentUserId)
 
              if(!followUser.followers.includes(currentUserId)){ //means someone we follow have some followers
                 await followUser.updateOne({$push:{followers:currentUserId}})
@@ -104,15 +104,18 @@ const followUser=async(req,res)=>{
 //Unfollow a user
 const unfollowUser=async(req,res)=>{
     const id=req.params.id;
+
     const {currentUserId}=req.body;
+    console.log('req',req);
+    console.log("reqqqss",req.body);
 
     if(currentUserId==id){
        res.status(403).json("Action forbidden") 
     }
     else{
         try{
-             const followUser=User.findById(id);
-             const followingUser=User.findById(currentUserId)
+             const followUser=await User.findById(id);
+             const followingUser=await User.findById(currentUserId)
 
              if(followUser.followers.includes(currentUserId)){ //means someone we follow have some followers
                 await followUser.updateOne({$pull:{followers:currentUserId}})
@@ -129,4 +132,4 @@ const unfollowUser=async(req,res)=>{
     }
 
 }
-module.exports = { getUser, updateUser,deleteUser ,followUser};
+module.exports = { getUser, updateUser,deleteUser ,followUser,unfollowUser};
