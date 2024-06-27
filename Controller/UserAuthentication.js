@@ -1,5 +1,8 @@
 const User=require('../Schema/User.js')
 const bcrypt=require('bcrypt')
+const jwt=require('jsonwebtoken');
+const dotenv=require('dotenv')
+dotenv.config()
 
 const registerUser=async(req,res)=>{
    try{
@@ -18,9 +21,13 @@ const registerUser=async(req,res)=>{
             email,
             password:hashPassword
         })
-        const saveUser=await newUser.save()
-        console.log('User creatd successfully');
-        res.status(201).json(saveUser)
+        const saveUser=await newUser.save();
+        const token=jwt.sign({
+            email:saveUser.email,id:saveUser._id
+        },process.env.JWT_KEY,{expiresIn:'1h'})
+        console.log("token",token);
+        console.log('User created successfully');
+        res.status(201).json({saveUser,token})
     }
    }
    catch(error){
@@ -36,7 +43,11 @@ const loginUser=async(req,res)=>{
         if (user){
             const passwordMatch=await bcrypt.compare(password,user.password)
             if (passwordMatch){
-                res.status(200).json({message:'user verified!'})
+                const token=jwt.sign({
+                    email:user.email,id:user._id
+                },process.env.JWT_KEY,{expiresIn:'1h'})
+                // console.log("token",token);
+                res.status(200).json({message:'user verified!',user,token})
             }
             else{
                 res.status(401).json({message:'Invalid credentials'})  

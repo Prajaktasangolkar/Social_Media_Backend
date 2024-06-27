@@ -6,7 +6,8 @@ const createPost=async(req,res)=>{
     const newPost= new PostModel(req.body)
     try {
         await newPost.save()
-        res.status(200).json('Post created!')
+        res.status(200).json('Post created!',newPost)
+        res.status(200).send('okkk')
     } catch (error) {
         res.status(500).json(error)
     }
