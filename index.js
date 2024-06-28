@@ -26,3 +26,7 @@ app.use('/upload',UploadRoute)
 app.listen(PORT,()=>{
     console.log('connected',PORT);
 })
+
+// comment to serevr images to public
+app.use(express.static("public"))
+app.use('/images',express.static("images"))

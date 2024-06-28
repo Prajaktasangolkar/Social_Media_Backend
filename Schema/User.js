@@ -32,6 +32,7 @@ const userScheme =new mongoose.Schema({
      livesin:String,
      workAt:String,
      relationship:String,
+     country:String,
      followers:[], //save id's
      following:[],
 },
