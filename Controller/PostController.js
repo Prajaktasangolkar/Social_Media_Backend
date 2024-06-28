@@ -4,10 +4,11 @@ const User=require('../Schema/User.js')
 
 const createPost=async(req,res)=>{
     const newPost= new PostModel(req.body)
+    console.log('newpost',newPost);
     try {
         await newPost.save()
-        res.status(200).json('Post created!',newPost)
-        res.status(200).send('okkk')
+        res.status(200).json(newPost)
+        // res.status(200).send('okkk')
     } catch (error) {
         res.status(500).json(error)
     }
