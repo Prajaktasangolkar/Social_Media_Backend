@@ -1,5 +1,6 @@
 const User = require("../Schema/User.js");
 const bcrypt = require("bcrypt");
+const jwt=require('jsonwebtoken')
 //get user
 
 const getUser = async (req, res) => {
@@ -41,6 +42,13 @@ const updateUser = async (req, res) => {
         
         req.body.password = await bcrypt.hash(password, 10);
       }
+
+      const token=jwt.sign(
+        {username:user.username,id:user._id},
+        process.env.JWT_KEY,
+        {expiresIn:"1h"}
+      )
+      res.status(200).json({user,token})
     } catch (error) {
       res.status(500).json(error);
     }
