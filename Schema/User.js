@@ -30,7 +30,7 @@ const userScheme =new mongoose.Schema({
      coverPicture:String,
      about:String,
      livesin:String,
-     workAt:String,
+     worksAt:String,
      relationship:String,
      country:String,
      followers:[], //save id's

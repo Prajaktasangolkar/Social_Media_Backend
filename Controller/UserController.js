@@ -23,8 +23,11 @@ const getUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const id = req.params.id;
-  const { currentUserId, currentUserAdminStatus, password } = req.body;
-  if (id == currentUserId || currentUserAdminStatus) {
+  
+  const { _id, isAdmin, password } = req.body;
+  console.log('re.body...',req.body);
+  console.log('id',id,'currentid',_id);
+  if (id == _id || isAdmin) {
     try {
       /*
             const user=await User.findByIdAndUpdate(id,req.body,{new:true})
@@ -83,18 +86,18 @@ const deleteUser=async (req,res)=>{
 //Follow a user
 const followUser=async(req,res)=>{
     const id=req.params.id;
-    const {currentUserId}=req.body;
+    const {_id}=req.body;
 
-    if(currentUserId==id){
+    if(_id==id){
        res.status(403).json("Action forbidden") 
     }
     else{
         try{
              const followUser=await User.findById(id);
-             const followingUser=await User.findById(currentUserId)
+             const followingUser=await User.findById(_id)
 
-             if(!followUser.followers.includes(currentUserId)){ //means someone we follow have some followers
-                await followUser.updateOne({$push:{followers:currentUserId}})
+             if(!followUser.followers.includes(_id)){ //means someone we follow have some followers
+                await followUser.updateOne({$push:{followers:_id}})
                 await followingUser.updateOne({$push:{following:id}})
                 res.status(200).json("User followed!")
              }
@@ -113,20 +116,20 @@ const followUser=async(req,res)=>{
 const unfollowUser=async(req,res)=>{
     const id=req.params.id;
 
-    const {currentUserId}=req.body;
+    const {_id}=req.body;
     console.log('req',req);
     console.log("reqqqss",req.body);
 
-    if(currentUserId==id){
+    if(_id==id){
        res.status(403).json("Action forbidden") 
     }
     else{
         try{
              const followUser=await User.findById(id);
-             const followingUser=await User.findById(currentUserId)
+             const followingUser=await User.findById(_id)
 
-             if(followUser.followers.includes(currentUserId)){ //means someone we follow have some followers
-                await followUser.updateOne({$pull:{followers:currentUserId}})
+             if(followUser.followers.includes(_id)){ //means someone we follow have some followers
+                await followUser.updateOne({$pull:{followers:_id}})
                 await followingUser.updateOne({$pull:{following:id}})
                 res.status(200).json("User unfollowed!")
              }
@@ -140,4 +143,17 @@ const unfollowUser=async(req,res)=>{
     }
 
 }
-module.exports = { getUser, updateUser,deleteUser ,followUser,unfollowUser};
+
+const getAllUser=async(req,res)=>{
+        try {
+          let users=await User.find();
+          users=users.map((user)=>{
+          const {password,...otherDetails}=user._doc;
+          return otherDetails
+          })
+          res.status(200).json(users)
+        } catch (error) {
+          res.status(500).json(error)
+        }
+}
+module.exports = { getUser, updateUser,deleteUser ,followUser,unfollowUser,getAllUser};
