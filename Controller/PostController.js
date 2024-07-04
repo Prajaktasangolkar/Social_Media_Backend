@@ -73,7 +73,9 @@ const deletePost=async(req,res)=>{
 //liked post
 const likePost=async(req,res)=>{
      const id=req.params.id;
+     console.log('reqqqqqq',req.body);
      const {userId}=req.body;
+     console.log('userIDDDD',userId);
      try {
       const post = await PostModel.findById(id);
       if (post.likes.includes(userId)) {
