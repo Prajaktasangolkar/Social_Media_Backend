@@ -9,7 +9,9 @@ const getUser = async (req, res) => {
     const user = await User.findById(id);
     if (user) {
       const { password, ...otherDetails } = user._doc;
+      console.log('userrrrrr',user);
       res.status(200).json(otherDetails);
+      console.log('otherDetails',otherDetails);
       //it will not take password
     } else {
       res.status(404).json("No such user");
@@ -25,7 +27,7 @@ const updateUser = async (req, res) => {
   const id = req.params.id;
   
   const { _id, isAdmin, password } = req.body;
-  console.log('re.body...',req.body);
+  console.log('re.body...update user',req.body);
   console.log('id',id,'currentid',_id);
   if (id == _id || isAdmin) {
     try {
@@ -117,8 +119,6 @@ const unfollowUser=async(req,res)=>{
     const id=req.params.id;
 
     const {_id}=req.body;
-    console.log('req',req);
-    console.log("reqqqss",req.body);
 
     if(_id==id){
        res.status(403).json("Action forbidden") 

@@ -4,7 +4,6 @@ const User=require('../Schema/User.js')
 
 const createPost=async(req,res)=>{
     const newPost= new PostModel(req.body)
-    console.log('newpost',newPost);
     try {
         await newPost.save()
         res.status(200).json(newPost)
@@ -73,9 +72,9 @@ const deletePost=async(req,res)=>{
 //liked post
 const likePost=async(req,res)=>{
      const id=req.params.id;
-     console.log('reqqqqqq',req.body);
+    //  console.log('reqqqqqq',req.body);
      const {userId}=req.body;
-     console.log('userIDDDD',userId);
+    //  console.log('userIDDDD',userId);
      try {
       const post = await PostModel.findById(id);
       if (post.likes.includes(userId)) {

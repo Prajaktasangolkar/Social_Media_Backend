@@ -19,9 +19,7 @@ app.use('/auth',AuthRoute)
 app.use('/user',Authrouter)
 app.use('/post',PostRoute)
 app.use('/upload',UploadRoute)
-// app.use("/",()=>{
-//     console.log('helllo world');
-// })
+
 
 app.listen(PORT,()=>{
     console.log('connected',PORT);
